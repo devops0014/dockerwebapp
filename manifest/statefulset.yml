@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mydb
+  template:
+    metadata:
+      labels:
+        app: mydb
+    spec:
+      containers:
+        - name: db-container
+          image: harikan65/docker-webapp:dbimage
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "devopspassword"
+            - name: MYSQL_DATABASE
+              value: "accounts"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopsdb
+spec:
+  clusterIP: None
+  selector:
+    app: mydb
+  ports:
+    - port: 3306
+      targetPort: 3306
+
+
