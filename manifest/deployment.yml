@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: app-container
+          image: harikan65/docker-webapp:appimage
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://devopsdb:3306/accounts
+            - name: SPRING_DATASOURCE_USERNAME
+              value: root
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: devopspassword
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devopsapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: myapp
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+
