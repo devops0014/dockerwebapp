@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cont-1
-          image: shaikmustafa/devopsapp:appimage
+          image: shaikmustafa/alien:appimage
           ports:
             - containerPort: 8080
       imagePullSecrets:
