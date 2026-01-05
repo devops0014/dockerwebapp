@@ -2,13 +2,13 @@ version: "3.8"
 services:
   devopsdb:
     container_name: devopsdb
-    image: ashok898/mydbimage:v1
+    image: ashok898/mydockerproject:dbimage
     ports:
       - "3306:3306"
 
   myapp:
-    image: ashok898/myappimage:v1
+    image: ashok898/mydockerproject:appimage
     ports:
-      - "1232:8080"
+      - "1111:8080"
     depends_on:
       - "devopsdb"
