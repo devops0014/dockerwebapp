@@ -5,14 +5,11 @@ services:
    image: shaikmustafa/automation:db
    ports:
      - "3306:3306"
-   deploy:
-     replicas: 3
+   
 
  application:
    image: shaikmustafa/automation:app
    ports:
      - "1111:8080"
-   deploy:
-     replicas: 3
    depends_on:
      - "devopsdb"
