@@ -1,15 +1,26 @@
----
-version: "3"
-services:
- devopsdb:
-   image: shaikmustafa/automation:db
-   ports:
-     - "3306:3306"
-   
+version: "3.9"
 
- application:
-   image: shaikmustafa/automation:app
-   ports:
-     - "1111:8080"
-   depends_on:
-     - "devopsdb"
+services:
+  devopsdb:
+    image: shaikmustafa/automation:db
+    ports:
+      - "3306:3306"
+    deploy:
+      replicas: 3
+    networks:
+      - mynetwork
+
+  application:
+    image: shaikmustafa/automation:app
+    ports:
+      - "1111:8080"
+    deploy:
+      replicas: 3
+    depends_on:
+      - devopsdb
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: overlay
