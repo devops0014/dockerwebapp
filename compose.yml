@@ -2,13 +2,17 @@
 version: "3"
 services:
  devopsdb:
-   image: shaikmustafa/harikanew:dbimage
+   image: shaikmustafa/automation:db
    ports:
      - "3306:3306"
+   deploy:
+     replicas: 3
 
  application:
-   image: shaikmustafa/harikanew:appimage
+   image: shaikmustafa/automation:app
    ports:
      - "1111:8080"
+   deploy:
+     replicas: 3
    depends_on:
      - "devopsdb"
