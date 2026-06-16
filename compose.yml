@@ -11,8 +11,8 @@ services:
       - "1111:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://devopsdb:3306/mydb
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_USERNAME: accounts
+      SPRING_DATASOURCE_PASSWORD: devopspassword
 
       SPRING_REDIS_HOST: redis
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -41,7 +41,7 @@ services:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: accounts
     ports:
       - "3306:3306"
     volumes:
