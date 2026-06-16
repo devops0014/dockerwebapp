@@ -1,26 +1,59 @@
 version: "3.9"
 
 services:
-  devopsdb:
-    image: shaikmustafa/deepika:db
+
+  traefik:
+    image: traefik:v3.0
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
     ports:
-      - "3306:3306"
-    deploy:
-      replicas: 3
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - mynetwork
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
+  redis:
+    image: redis:7
+    networks:
+      - mynetwork
+    deploy:
+      replicas: 1
+
+  devopsdb:
+    image: shaikmustafa/deepika:db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - mynetwork
+    deploy:
+      replicas: 1
 
   application:
     image: shaikmustafa/deepika:app
-    ports:
-      - "1111:8080"
+    environment:
+      SPRING_REDIS_HOST: redis
+      SPRING_DATASOURCE_URL: jdbc:mysql://devopsdb:3306/mydb
+    networks:
+      - mynetwork
     deploy:
       replicas: 3
     depends_on:
       - devopsdb
-    networks:
-      - mynetwork
+      - redis
 
 networks:
   mynetwork:
     driver: overlay
+
+volumes:
+  dbdata:
