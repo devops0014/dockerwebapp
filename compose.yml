@@ -42,7 +42,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: devopspassword
-      MYSQL_DATABASE: mydb
+      MYSQL_DATABASE: accounts
     volumes:
       - dbdata:/var/lib/mysql
     networks:
@@ -61,7 +61,7 @@ services:
     image: shaikmustafa/deepika:app
     environment:
       SPRING_REDIS_HOST: redis
-      SPRING_DATASOURCE_URL: jdbc:mysql://devopsdb:3306/mydb
+      SPRING_DATASOURCE_URL: jdbc:mysql://devopsdb:3306/accounts
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: devopspassword
     networks:
