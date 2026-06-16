@@ -2,16 +2,16 @@ version: "3.9"
 
 services:
   devopsdb:
-    image: shaikmustafa/automation:db
+    image: shaikmustafa/deepika:db
     ports:
       - "3306:3306"
     deploy:
-      replicas: 3
+      replicas: 1
     networks:
       - mynetwork
 
   application:
-    image: shaikmustafa/automation:app
+    image: shaikmustafa/deepika:app
     ports:
       - "1111:8080"
     deploy:
