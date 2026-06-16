@@ -1,85 +1,26 @@
 version: "3.9"
 
 services:
-
-  traefik:
-    image: traefik:v3.0
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.swarmMode=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-    ports:
-      - "80:80"
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - mynetwork
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-      restart_policy:
-        condition: on-failure
-
-  redis:
-    image: redis:7
-    networks:
-      - mynetwork
-    deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   devopsdb:
-    image: mysql:8.4
-    environment:
-      MYSQL_ROOT_PASSWORD: devopspassword
-      MYSQL_DATABASE: accounts
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - mynetwork
+    image: shaikmustafa/deepika:db
+    ports:
+      - "3306:3306"
     deploy:
       replicas: 1
-      restart_policy:
-        condition: on-failure
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pdevopspassword"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+    networks:
+      - mynetwork
 
   application:
     image: shaikmustafa/deepika:app
-    environment:
-      SPRING_REDIS_HOST: redis
-      SPRING_DATASOURCE_URL: jdbc:mysql://devopsdb:3306/accounts
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: devopspassword
-    networks:
-      - mynetwork
+    ports:
+      - "1111:8080"
     deploy:
       replicas: 3
-      restart_policy:
-        condition: on-failure
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080"]
-      interval: 20s
-      timeout: 10s
-      retries: 5
+    depends_on:
+      - devopsdb
+    networks:
+      - mynetwork
 
 networks:
   mynetwork:
     driver: overlay
-    attachable: true
-
-volumes:
-  dbdata:
