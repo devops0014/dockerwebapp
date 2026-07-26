@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: cont-1
-          image: saiyaswanth76/k8s-1:dbimage
+          image: saiyaswanth76/k8s01:dbimage
           ports:
             - containerPort: 3306
       imagePullSecrets:
