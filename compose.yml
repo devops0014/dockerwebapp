@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   devopsdb:
-    image: shaikmustafa/flm-oct:db
+    image: nani8790/automation:db
     ports:
       - "3306:3306"
     deploy:
@@ -11,7 +11,7 @@ services:
       - mynetwork
 
   application:
-    image: shaikmustafa/flm-oct:javaapp
+    image: nani8790/automation:app
     ports:
       - "1111:8080"
     deploy:
