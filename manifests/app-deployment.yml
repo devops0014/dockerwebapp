@@ -18,9 +18,6 @@ spec:
           image: shaikmustafa/k8sfirst:appimage
           ports:
             - containerPort: 8080
-      imagePullSecrets:
-        - name: flm
-
 
 
 
